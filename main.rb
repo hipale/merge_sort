@@ -1,30 +1,28 @@
 def merge_sort(arr)
-  if arr.length <= 2
+  if arr.size < 2
     return arr
   else
-    left_side = arr.slice(0, (arr.length / 2).to_f.ceil)
-    right_side = arr.slice((arr.length / 2).to_f.ceil, arr.length)
-    new_arr = [merge_sort(left_side), merge_sort(right_side)]
-    min_val_r = new_arr[0]
-    min_val_l = new_arr[1]
-    arr = []
-
-  0.upto(min_val_r.length + min_val_l.length - 2) do 
-    if  min_val_r.min < min_val_l.min
-      arr.push(min_val_r.min)
-      min_val_r.delete(min_val_r.min)
-    else 
-      arr.push(min_val_l.min)
-      min_val_l.delete(min_val_l.min)
-    end
-  end
-
-  if min_val_l == nil then arr.push(min_val_r[0])
-  elsif min_val_r == nil then arr.push(min_val_l[0]) 
-  end
+    left_side = merge_sort(arr.slice(0, arr.length / 2))
+    right_side = merge_sort(arr.slice(arr.length / 2, arr.length))
     
-    print arr
+    arr = []
+    0.upto(left_side.size + right_side.size - 1) do
+      if left_side == []
+        arr << right_side.shift
+      elsif right_side.empty?
+        arr << left_side.shift
+      else 
+        if left_side[0] < right_side[0]
+          arr << left_side.shift
+        elsif right_side[0] < left_side[0]
+          arr << right_side.shift
+        else
+        arr << left_side.shift
+        end
+      end
+    end
+     arr
   end   
 end
 
-    puts merge_sort([3, 5, 4, 2, 6, 7, 9, 7])
+    puts merge_sort([3, 5, 4, 2, 1, 8, 7, 5])
